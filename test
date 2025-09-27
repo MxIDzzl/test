@@ -1,13 +1,10 @@
 for (i = 1; i <= 500; i++) {
-    var materias = ["Matemáticas", "Física", "Química", "Historia", "Lengua", "Inglés", "Biología", "Geografía", "Filosofía", "Arte"];
+    var materias = ["Programacion","Ciberseguridad","Ecuaciones diferenciales","Educacion fisica", "Filosofia 3","Programacion web","Desarrollo de software","Algebra","Calculo","Artes"];
     for (j = 0; j < materias.length; j++) {
-        db.prubaUCA.insert({
-            registro: i,
-            materias: materias[j],
-            calificacion: Math.floor(Math.random() * 10) + 1
-        });
+        db.prubaUCA.insert({ registro: i, materias: materias[j], calificacion: Math.floor(Math.random() * 10) + 1});
     }
 }
+
 
 
 db.prubaUCA.find().pretty()
