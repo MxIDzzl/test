@@ -1,8 +1,52 @@
-for (i = 1; i <= 500; i++) {
-    var materias = ["Programacion","Ciberseguridad","Ecuaciones diferenciales","Educacion fisica", "Filosofia 3","Programacion web","Desarrollo de software","Algebra","Calculo","Artes"];
-    for (j = 0; j < materias.length; j++) {
-        db.prubaUCA.insert({ registro: i, materias: materias[j], calificacion: Math.floor(Math.random() * 10) + 1});
+var nombres = ["Luis","Ana","Pedro","Maria","Carlos","Sofia","Juan","Lucia","Miguel","Elena"];
+var apellidosP = ["Perez","Lopez","Gomez","Hernandez","Martinez","Garcia","Diaz","Sanchez","Torres","Flores"];
+var apellidosM = ["Ramirez","Vazquez","Morales","Cruz","Rojas","Ortiz","Reyes","Castillo","Nunez","Silva"];
+var materias = ["Programacion","Ciberseguridad","Ecuaciones diferenciales","Educacion fisica","Filosofia","Programacion web","Desarrollo de software","Algebra","Calculo","Artes","Fisica","Quimica","Biologia","Historia","Ingles","Español","Matematicas discretas","Bases de datos","Redes","Inteligencia artificial"];
+var colonias = ["Centro","Jardines","Los Pinos","Vista Alegre","La Paz","San Miguel","Santa Lucia","El Sol","Las Flores","Buenavista"];
+var municipios = ["Aguascalientes","Rincon de Romos","San Francisco","Jesús María","El Llano","Calvillo","Pabellón de Arteaga","Cosío","Tepezalá","Asientos"];
+var hobbies = ["Leer","Deporte","Videojuegos","Cocinar","Cantar","Bailar","Pintar","Escribir","Fotografia","Natacion"];
+
+function aleatorio(array){
+    return array[Math.floor(Math.random() * array.length)];
+}
+
+function materiasAleatorias(array, n){
+    var copia = array.slice();
+    var seleccionadas = [];
+    for(var i=0;i<n;i++){
+        var index = Math.floor(Math.random() * copia.length);
+        seleccionadas.push(copia[index]);
+        copia.splice(index,1);
     }
+    return seleccionadas;
+}
+
+var batch = [];
+var batchSize = 20000;
+var total = 20000000;
+
+for(var i=1; i<=total; i++){
+    batch.push({
+        id: i,
+        nombre: aleatorio(nombres),
+        app: aleatorio(apellidosP),
+        apm: aleatorio(apellidosM),
+        materias: materiasAleatorias(materias,3),
+        calle: Math.floor(Math.random() * 500) + 1,
+        colonia: aleatorio(colonias),
+        municipio: aleatorio(municipios),
+        edad: Math.floor(Math.random() * (62-18+1)) + 18,
+        hobby: aleatorio(hobbies)
+    });
+
+    if(batch.length >= batchSize){
+        db.personas.insertMany(batch);
+        batch = [];
+    }
+}
+
+if(batch.length > 0){
+    db.personas.insertMany(batch);
 }
 
 
